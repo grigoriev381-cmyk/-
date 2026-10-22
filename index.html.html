@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E0E10">
+<title>ФестКадр — Твой фильм. Его фестиваль.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--text:#F5F5F0;--surface:#121214;--fg:var(--text);--font-head:Oswald,Inter,sans-serif;--font-text:Inter,Arial,sans-serif;--size:18px;--bg:#0E0E10;
+--fg:#F5F5F0;
+--muted:#aaa9a5;
+--line:#343438;
+--accent:#FF3B30;
+--green:#30D158;
+--red:#FF453A;
+--yellow:#FFD60A;
+--blue:#0A84FF;
+--radius:16px;
+--surface:#121214;
+--paper:#F2EDE4;
+--ink:#141414;
+/* Приложение к дизайн-коду (файлу стиля) */
+--font-mono:"IBM Plex Mono",monospace;
+--col:680px;
+--gap:clamp(72px,9vw,128px)}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;
+scroll-padding-top:86px}
+body{margin:0;
+background:var(--bg);
+color:var(--fg);
+font:18px/1.6 Inter,Arial,sans-serif;
+overflow-x:visible}
+a{color:inherit}
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+h1,h2,h3,h4,.brand,.festival-name,.big-number{font-family:Oswald,Inter,sans-serif;
+letter-spacing:-.045em;
+line-height:1.18}
+h1,h2,h3,h4,.movie-title{color:var(--accent);
+transition:color .6s}
+h1{font-size:clamp(2.4rem,7vw,6rem);
+max-width:1050px;
+margin:0 0 24px}
+h2{font-size:clamp(2rem,4.2vw,4rem);
+margin:0 0 30px;
+max-width:960px}
+h3{font-size:1.05rem;
+margin:0 0 12px}
+p{margin:0 0 20px}
+.wrap{width:min(1160px,calc(100% - 48px));
+margin-inline:auto}
+.narrow{max-width:680px}
+.muted{color:var(--muted)}
+.site-header{height:70px;
+position:sticky;
+top:0;
+z-index:30;
+background:rgba(14,14,16,.94);
+backdrop-filter:blur(14px);
+border-bottom:1px solid var(--line)}
+.nav{height:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px}
+.brand{font-size:13px;
+font-weight:700;
+text-decoration:none;
+white-space:nowrap;
+color:var(--accent);
+transition:color .6s}
+.nav-links{display:flex;
+align-items:center;
+gap:22px;
+font-size:12px;
+color:var(--muted)}
+.nav-links a{text-decoration:none}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--accent)}
+
+.hero{min-height:calc(100svh - 70px);
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:60px 0 50px}
+.eyebrow,.section-label{font-size:11px;
+font-weight:700;
+letter-spacing:.15em;
+text-transform:uppercase;
+color:var(--accent);
+margin-bottom:20px;
+transition:color .6s}
+.hero-sub{font-size:clamp(1.1rem,2vw,1.4rem);
+max-width:680px;
+color:#d7d7d2;
+margin-bottom:18px}
+.hero-promise{font-size:clamp(1rem,1.5vw,1.15rem);
+font-weight:600;
+color:var(--accent);
+max-width:720px;
+margin-bottom:22px}
+.hero-actions{margin:0 0 34px}
+.hero-actions .primary{text-decoration:none;
+display:inline-flex;
+align-items:center;
+gap:10px}
+.carousel{--festival-bg:#F4F0E9;
+--festival-ink:#111;
+--festival-color:#FF3B30;
+position:relative;
+isolation:isolate;
+overflow:hidden;
+min-height:clamp(280px,38vw,430px);
+border:1px solid var(--festival-color);
+border-radius:var(--radius);
+padding:clamp(24px,5vw,48px);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+background:var(--festival-bg);
+color:var(--festival-ink);
+transition:background-color .45s,border-color .45s,color .3s}
+.slide-image{position:absolute;
+right:clamp(20px,5vw,58px);
+top:50%;
+transform:translateY(-50%);
+width:clamp(150px,31%,340px);
+height:70%;
+object-fit:contain;
+object-position:center;
+z-index:0;
+padding:0;
+transition:opacity .35s;
+filter:none;
+pointer-events:none}
+.slide-count{position:relative;
+z-index:2;
+font-size:12px;
+letter-spacing:.12em;
+color:var(--festival-ink,#111);
+opacity:.9}
+.festival-name{position:relative;
+z-index:2;
+font-family:var(--festival-font,Inter,sans-serif);
+font-size:clamp(2.2rem,7vw,5.6rem);
+font-weight:700;
+line-height:1.08;
+letter-spacing:var(--festival-letter-spacing,normal);
+color:var(--festival-ink,#111)!important;
+opacity:1;
+max-width:56%;
+overflow-wrap:anywhere;
+text-wrap:balance;
+text-shadow:0 1px 0 rgba(0,0,0,.04)}
+.carousel-bottom{position:relative;
+z-index:1;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:18px;
+margin-top:30px}
+.dots{display:flex;
+gap:7px;
+flex-wrap:wrap}
+.dot{border:0;
+width:23px;
+height:4px;
+background:color-mix(in srgb,var(--festival-ink) 30%,transparent);
+padding:0;
+border-radius:4px}
+.dot[aria-current=true]{background:var(--festival-color);
+outline:1px solid var(--festival-ink);
+outline-offset:2px}
+.arrows{display:flex;
+gap:8px}
+.arrow{width:46px;
+height:46px;
+border:1px solid color-mix(in srgb,var(--festival-ink) 45%,transparent);
+border-radius:50%;
+background:color-mix(in srgb,var(--festival-bg) 80%,transparent);
+color:var(--festival-ink);
+font-size:22px;
+transition:background .2s,border-color .45s}
+.arrow:hover{background:var(--festival-color);
+border-color:var(--festival-color);
+color:var(--festival-bg)}
+
+.section{padding:clamp(96px,12vw,160px) 0}
+.split{display:grid;
+grid-template-columns:minmax(0,1fr) minmax(260px,.8fr);
+gap:clamp(32px,7vw,100px);
+align-items:start}
+.big-number{font-size:clamp(2.5rem,5.4vw,5.4rem);
+color:var(--accent);
+position:sticky;
+top:110px;
+line-height:1.12;
+overflow-wrap:anywhere;
+transition:color .6s}
+.checks{display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:14px;
+margin-top:36px}
+.check-card,.panel,.festival-card,.step-card,.result-card{border:1px solid var(--line);
+border-radius:var(--radius);
+padding:clamp(20px,3vw,30px);
+background:#121214;
+min-width:0}
+.check-card:last-child{grid-column:1/-1}
+.number{display:block;
+font-family:Oswald,sans-serif;
+font-size:13px;
+color:var(--accent);
+margin-bottom:24px}
+.check-card p,.festival-card p,.step-card p{font-size:15px;
+line-height:1.65;
+color:#d0d0cb;
+margin:0}
+.note{border:1px solid var(--accent);
+border-radius:var(--radius);
+padding:24px 28px;
+margin-top:18px;
+transition:border-color .6s}
+.case-grid{display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+align-items:stretch}
+.movie-card{border:1px solid var(--accent);
+border-radius:var(--radius);
+padding:clamp(22px,4vw,38px)}
+.movie-title{font-family:Oswald,sans-serif;
+font-size:clamp(1.7rem,4vw,3rem);
+margin-bottom:8px}
+.facts{list-style:none;
+margin:24px 0 0;
+padding:0}
+.facts li{padding:10px 0;
+border-top:1px solid var(--line);
+font-size:14px;
+display:flex;
+justify-content:space-between;
+gap:12px}
+.facts li span:last-child{text-align:right;
+color:var(--muted)}
+.festival-options{display:grid;
+gap:16px}
+.status{display:inline-flex;
+align-items:center;
+gap:8px;
+font-size:11px;
+font-weight:700;
+text-transform:uppercase;
+letter-spacing:.06em;
+margin-bottom:18px}
+.status:before{content:"";
+width:8px;
+height:8px;
+border-radius:50%;
+background:currentColor}
+.status.bad{color:var(--red)}
+.status.good{color:var(--green)}
+.case-copy{max-width:780px;
+margin:30px 0 0}
+.steps{display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:14px;
+margin-top:36px}
+.step-card{display:flex;
+flex-direction:column;
+align-items:flex-start;
+border-top:3px solid var(--accent);
+padding-top:25px}
+.step-card .number{color:var(--accent)}
+.badge{display:inline-block;
+font-size:11px;
+font-weight:700;
+padding:5px 10px;
+border:1px solid var(--accent);
+border-radius:999px;
+color:var(--accent);
+margin-bottom:24px}
+.step-card h3{font-size:1.25rem;
+margin-bottom:14px}
+.demo-wide{max-width:1000px;
+margin-inline:auto}
+.demo-intro{max-width:680px;
+margin-bottom:30px}
+.demo{border:1px solid var(--line);
+border-radius:var(--radius);
+padding:clamp(18px,4vw,36px);
+background:#121214}
+.demo-grid{display:grid;
+grid-template-columns:repeat(5,minmax(0,1fr));
+gap:12px;
+margin-bottom:20px}
+.field{display:flex;
+flex-direction:column;
+gap:8px;
+min-width:0}
+.field label{font-size:12px;
+color:var(--muted)}
+.field input,.field select{width:100%;
+min-width:0;
+border:1px solid #45454b;
+border-radius:10px;
+background:#1a1a1e;
+color:var(--fg);
+padding:12px 10px;
+min-height:48px;
+font-size:14px}
+.field textarea{width:100%;
+min-width:0;
+resize:vertical;
+border:1px solid #45454b;
+border-radius:10px;
+background:#1a1a1e;
+color:var(--fg);
+padding:14px;
+font:14px/1.65 Inter,Arial,sans-serif}
+.field textarea:focus{outline:2px solid var(--accent);
+outline-offset:2px}
+.synopsis-field{grid-column:1/-1}
+.results-section{margin-top:32px}
+.winner-list{display:grid;
+gap:14px}
+.winner-card{border:1px solid var(--line);
+border-radius:14px;
+padding:18px;
+background:#171719;
+min-width:0}
+.winner-card h4{font-size:15px;
+margin:0 0 12px}
+.winner-table{width:100%;
+table-layout:fixed;
+border-collapse:collapse;
+font-size:12px;
+line-height:1.5;
+overflow-wrap:anywhere}
+.winner-table th,.winner-table td{text-align:left;
+vertical-align:top;
+padding:10px 6px;
+border-top:1px solid var(--line);
+overflow-wrap:anywhere;
+word-break:normal}
+.winner-table th{color:var(--muted);
+font-weight:600}
+.match-tag{display:inline-block;
+border-radius:999px;
+padding:4px 8px;
+font-size:10px;
+font-weight:700;
+white-space:normal}
+.match-close{background:rgba(48,209,88,.14);
+color:#30D158}
+.match-partial{background:rgba(255,214,10,.14);
+color:#FFD60A}
+.match-far{background:rgba(170,170,165,.12);
+color:#aaa9a5}
+.status{white-space:normal}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);
+outline-offset:2px}
+.primary{border:1px solid var(--accent);
+border-radius:12px;
+background:var(--accent);
+color:#101012;
+padding:14px 22px;
+font-size:14px;
+font-weight:700;
+transition:opacity .2s,background .6s,border-color .6s}
+.primary:hover{opacity:.86}
+.primary:focus-visible,.arrow:focus-visible,a:focus-visible,.switch:focus-visible{outline:2px solid var(--fg);
+outline-offset:4px}
+.results-head{display:flex;
+justify-content:space-between;
+gap:16px;
+align-items:baseline;
+margin:32px 0 14px}
+.results-head h3{margin:0}
+.result-list{display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px}
+.result-card{padding:18px}
+.result-card h4{font-size:15px;
+margin:0 0 12px}
+.result-meta{font-size:12px;
+color:var(--muted);
+line-height:1.7}
+.reason{font-size:13px;
+margin:10px 0 0}
+.budget-line{display:flex;
+justify-content:space-between;
+gap:16px;
+align-items:baseline;
+border-top:1px solid var(--line);
+margin-top:18px;
+padding-top:20px;
+font-weight:700}
+.budget-line.over{color:var(--red)}
+.recommendation{border:1px solid var(--accent);
+border-radius:var(--radius);
+padding:clamp(20px,3vw,30px);
+margin-top:18px;
+transition:border-color .6s}
+.recommendation h3{margin-bottom:14px}
+.recommendation p{font-size:15px;
+line-height:1.7;
+margin:0}
+.demo-note{font-size:12px;
+color:var(--muted);
+margin:18px 0 0}
+.loading{display:inline-flex;
+align-items:center;
+gap:10px}
+.spinner{width:15px;
+height:15px;
+border:2px solid #171719;
+border-top-color:transparent;
+border-radius:50%;
+animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}
+}
+
+.calendar-layout{display:grid;
+grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);
+gap:24px;
+align-items:start}
+.calendar-shell{border:1px solid var(--line);
+border-radius:var(--radius);
+padding:22px;
+min-width:0}
+.calendar-title{display:flex;
+justify-content:space-between;
+align-items:baseline;
+gap:12px;
+margin-bottom:18px}
+.calendar-title h3{margin:0}
+.example-label{font-size:11px;
+color:var(--muted);
+border:1px solid var(--line);
+border-radius:99px;
+padding:4px 9px}
+.calendar-scroll{overflow-x:auto;
+overscroll-behavior-x:contain;
+padding-bottom:4px}
+.calendar-grid{display:grid;
+grid-template-columns:repeat(7,minmax(38px,1fr));
+gap:5px;
+min-width:320px}
+.weekday{text-align:center;
+font-size:11px;
+color:var(--muted);
+padding:8px 0}
+.day{min-height:48px;
+position:relative;
+border:1px solid transparent;
+border-radius:9px;
+background:#19191c;
+color:var(--fg);
+font-size:12px;
+padding:7px 4px;
+text-align:center}
+.day.empty{background:transparent}
+.day.marked{border-color:var(--mark);
+color:var(--mark);
+font-weight:700}
+.day.marked:after{content:"";
+position:absolute;
+bottom:5px;
+left:calc(50% - 3px);
+width:6px;
+height:6px;
+border-radius:50%;
+background:var(--mark)}
+.day:hover,.day[aria-pressed=true]{background:#29292e;
+outline:1px solid var(--mark)}
+.calendar-legend{display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:14px;
+font-size:11px;
+color:var(--muted)}
+.legend-dot{display:inline-block;
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--c);
+margin-right:5px}
+.email-preview{border:1px solid var(--line);
+border-radius:var(--radius);
+padding:22px;
+margin-top:16px}
+.email-preview h3{font-size:15px}
+.email-preview p{font-size:13px;
+margin:0;
+color:#d4d4ce}
+.after-submit{color:var(--green);
+margin:24px 0 14px;
+font-size:15px}
+.switch-row{display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:18px;
+margin-top:18px;
+font-size:14px}
+.switch{position:relative;
+width:54px;
+height:30px;
+flex:0 0 54px;
+border:1px solid #777;
+border-radius:999px;
+background:#343438;
+padding:0;
+transition:background .2s}
+.switch:before{content:"";
+position:absolute;
+top:3px;
+left:3px;
+width:22px;
+height:22px;
+border-radius:50%;
+background:#fff;
+transition:transform .2s}
+.switch[aria-checked=true]{background:var(--green);
+border-color:var(--green)}
+.switch[aria-checked=true]:before{transform:translateX(24px)}
+.switch-message{font-size:13px;
+color:var(--green);
+margin:12px 0 0}
+.calendar-copy{max-width:680px;
+margin-top:24px}
+.final{padding:clamp(100px,15vw,180px) 0 80px}
+.final h2{font-size:clamp(2.5rem,6.5vw,6rem);
+max-width:1050px}
+.final-sub{font-size:clamp(1.1rem,2vw,1.4rem);
+max-width:680px;
+margin:30px 0}
+.contact-links{display:flex;
+gap:12px;
+flex-wrap:wrap}
+.contact{border:1px solid var(--accent);
+border-radius:12px;
+padding:14px 20px;
+text-decoration:none;
+font-size:14px;
+font-weight:600;
+transition:background .2s,color .2s,border-color .6s}
+.contact:hover{background:var(--accent);
+color:#101012}
+.footer{border-top:1px solid var(--line);
+padding:24px 0 32px;
+color:var(--muted);
+font-size:11px}
+.reveal{opacity:0;
+transform:translateY(18px);
+transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;
+transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;
+animation-duration:.01ms!important;
+transition-duration:.01ms!important}
+.reveal{opacity:1;
+transform:none}
+}
+
+@media(max-width:900px){.nav-links{gap:12px}
+.demo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.split{grid-template-columns:1fr}
+.big-number{position:static}
+.steps{grid-template-columns:1fr}
+.calendar-layout{grid-template-columns:1fr}
+}
+
+@media(max-width:620px){body{font-size:16px}
+.wrap{width:min(100% - 32px,1160px)}
+.site-header{height:auto;
+min-height:66px}
+.nav{align-items:flex-start;
+flex-direction:column;
+justify-content:center;
+padding:11px 0;
+gap:7px}
+.nav-links{width:100%;
+overflow-x:auto;
+white-space:nowrap;
+padding-bottom:3px;
+gap:16px;
+font-size:11px}
+.hero{min-height:auto;
+padding:62px 0 36px}
+.carousel{min-height:300px;
+padding:22px}
+.slide-image{right:18px;
+top:24px;
+transform:none;
+width:34%;
+height:34%;
+object-position:center}
+.festival-name{font-size:clamp(1.8rem,8vw,3rem);
+max-width:65%;
+margin-top:auto;
+margin-bottom:26px}
+.checks,.case-grid,.result-list{grid-template-columns:1fr}
+.check-card:last-child{grid-column:auto}
+.facts li{font-size:13px}
+.demo-grid{grid-template-columns:1fr 1fr}
+.demo-grid .field:last-child{grid-column:1/-1}
+.budget-line{align-items:flex-start;
+flex-direction:column;
+gap:4px}
+.results-head{align-items:flex-start;
+flex-direction:column}
+.section{padding:96px 0}
+.contact-links{flex-direction:column;
+align-items:stretch}
+.contact{text-align:center}
+.carousel-bottom{align-items:flex-end}
+.calendar-shell{padding:14px}
+.winner-table{font-size:10px}
+.winner-table th,.winner-table td{padding:8px 3px}
+.match-tag{font-size:9px;
+padding:3px 5px}
+.calendar-grid{min-width:320px}
+.switch-row{align-items:flex-start}
+.calendar-title h3{font-size:14px}
+}
+
+
+/* Фирменная система «ФестКадр» */
+:root{--font-mono:"IBM Plex Mono",monospace;
+--col:680px;
+--gap:clamp(72px,9vw,128px)}
+
+html{scroll-padding-top:76px;
+overflow-x:clip}
+body{overflow-x:clip;
+font-family:Inter,Arial,sans-serif;
+color:var(--fg)}
+
+h1,h2,h3,h4,.brand,.festival-name,.big-number,.movie-title{font-family:Oswald,Impact,sans-serif;
+letter-spacing:-.02em;
+line-height:1.08}
+
+h1,h2,h3,h4,.movie-title{color:var(--fg)}
+h1{font-size:clamp(2.2rem,min(6.5vw,10vh),5.5rem);
+text-transform:uppercase;
+max-width:650px;
+margin:0 0 clamp(14px,2.4vh,24px);
+overflow-wrap:break-word}
+
+h2{color:var(--fg);
+font-size:clamp(2rem,4.5vw,4rem);
+max-width:var(--col)}
+h3{color:inherit}
+
+.scroll-progress{height:6px;
+position:relative;
+z-index:45;
+background-color:var(--bg);
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='6' viewBox='0 0 18 6'%3E%3Crect x='3' y='1' width='4' height='4' fill='%23F5F5F0' fill-opacity='.24'/%3E%3Crect x='11' y='1' width='4' height='4' fill='%23F5F5F0' fill-opacity='.24'/%3E%3C/svg%3E");
+background-repeat:repeat-x;
+overflow:hidden}
+.scroll-progress-fill{height:100%;
+width:0;
+background-color:var(--accent);
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='6' viewBox='0 0 18 6'%3E%3Crect x='3' y='1' width='4' height='4' fill='%230E0E10' fill-opacity='.45'/%3E%3Crect x='11' y='1' width='4' height='4' fill='%230E0E10' fill-opacity='.45'/%3E%3C/svg%3E");
+background-repeat:repeat-x;
+transition:width .06s linear}
+
+.site-header{height:64px;
+position:sticky;
+top:0;
+z-index:40;
+background:var(--bg);
+backdrop-filter:none;
+border-bottom:1px solid var(--line)}
+.header-inner{width:100%;
+height:64px;
+padding:0 clamp(16px,3.4vw,48px);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:24px}
+.brand{display:flex;
+align-items:center;
+gap:10px;
+color:var(--fg);
+font-size:25px;
+font-weight:700;
+letter-spacing:-.025em;
+text-decoration:none}
+.brand-mark{width:27px;
+height:24px;
+flex:none}
+.nav-links{display:flex;
+align-items:center;
+gap:clamp(14px,2.4vw,34px);
+font:13px/1.2 var(--font-mono);
+color:var(--fg)}
+.nav-links a{transition:color .2s}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--accent)}
+.header-deadline{display:flex;
+align-items:center;
+gap:9px;
+font:12px/1.4 var(--font-mono);
+white-space:nowrap}
+.header-deadline strong{font-weight:500}
+.header-deadline small{font-size:10px;
+color:var(--muted);
+border-left:1px solid var(--line);
+padding-left:8px}
+.menu-toggle{display:none;
+width:44px;
+height:44px;
+border:1px solid var(--line);
+background:transparent;
+color:var(--fg);
+align-items:center;
+justify-content:center;
+flex-direction:column;
+gap:6px}
+.menu-toggle span{width:20px;
+height:1px;
+background:currentColor}
+.mobile-menu{display:none}
+
+.hero{width:100%;
+max-width:none;
+min-height:calc(100dvh - 70px);
+height:calc(100dvh - 70px);
+padding:clamp(18px,3.4vh,34px) clamp(16px,5vw,80px);
+display:grid;
+grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+align-items:center;
+gap:clamp(22px,4vw,72px);
+overflow:visible}
+.hero-copy{min-width:0;
+max-width:700px}
+.eyebrow,.section-label{font:12px/1.4 var(--font-mono);
+letter-spacing:0;
+text-transform:none;
+color:var(--fg);
+margin-bottom:clamp(14px,2.5vh,26px)}
+.eyebrow:before,.section-label:before{content:"●";
+font-size:9px;
+color:var(--accent);
+margin-right:10px;
+vertical-align:2px;
+transition:color .6s}
+.hero-promise{font-size:18px;
+line-height:1.45;
+font-weight:500;
+color:var(--accent);
+max-width:590px;
+margin:0 0 clamp(18px,3vh,30px);
+transition:color .6s}
+.hero-sub{font-size:14px;
+line-height:1.6;
+color:var(--muted);
+max-width:500px;
+margin:clamp(16px,2.5vh,26px) 0 0}
+.hero-actions{margin:0}
+.hero-actions .primary{min-height:48px;
+border-radius:3px;
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+gap:12px;
+padding:13px 19px;
+font:13px/1.2 var(--font-mono);
+color:var(--ink);
+background:var(--accent)}
+
+.hero-festival{min-width:0;
+width:100%;
+max-width:620px;
+justify-self:end}
+.carousel{--festival-bg:#F4F0E9;
+--festival-ink:#111;
+--festival-color:#FF6257;
+position:relative;
+display:grid;
+grid-template-columns:minmax(0,72fr) minmax(112px,28fr);
+width:100%;
+height:min(50dvh,460px);
+min-height:260px;
+max-height:460px;
+padding:0;
+overflow:visible;
+isolation:isolate;
+border:2px solid var(--accent);
+border-radius:var(--radius);
+background:var(--bg);
+color:var(--fg);
+transition:border-color .6s,transform .4s cubic-bezier(.2,.7,.2,1);
+transform:translateX(0);
+box-shadow:none}
+.carousel.is-entering{transform:translateX(24px);
+opacity:.72}
+.ticket-main{position:relative;
+min-width:0;
+min-height:0;
+padding:10px;
+border-right:1px dashed var(--accent);
+display:flex;
+align-items:stretch;
+justify-content:stretch}
+.ticket-main:before,.ticket-main:after{content:"";
+position:absolute;
+z-index:4;
+right:-10px;
+width:18px;
+height:18px;
+border-radius:50%;
+background:var(--bg);
+border:2px solid var(--accent)}
+.ticket-main:before{top:-10px;
+border-top-color:var(--bg);
+border-left-color:var(--bg)}
+.ticket-main:after{bottom:-10px;
+border-bottom-color:var(--bg);
+border-left-color:var(--bg)}
+.ticket-logo-panel{position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+width:100%;
+min-width:0;
+min-height:0;
+background:var(--festival-bg);
+border-radius:calc(var(--radius) - 6px);
+padding:clamp(12px,2.2vw,24px);
+overflow:hidden}
+.slide-image{position:relative;
+inset:auto;
+transform:none;
+display:block;
+width:100%;
+height:100%;
+max-height:100%;
+object-fit:contain;
+object-position:center;
+z-index:1;
+padding:0;
+pointer-events:none;
+transition:opacity .35s}
+.ticket-fallback{display:none;
+position:absolute;
+inset:12px;
+align-items:center;
+justify-content:center;
+text-align:center;
+font:700 clamp(1.7rem,3vw,3rem)/1.05 Oswald,sans-serif;
+color:var(--festival-ink);
+overflow-wrap:anywhere}
+.ticket-stub{min-width:0;
+padding:clamp(12px,2vw,24px) clamp(10px,1.7vw,20px);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+align-items:flex-start}
+.slide-count{font:500 13px/1.4 var(--font-mono);
+color:var(--fg);
+letter-spacing:0;
+opacity:1}
+.festival-name{font:700 clamp(1.4rem,min(3.2vw,5.5vh),3.2rem)/1.03 Oswald,sans-serif;
+letter-spacing:-.02em;
+color:var(--fg)!important;
+max-width:100%;
+overflow-wrap:anywhere;
+text-wrap:balance;
+text-shadow:none}
+.ticket-caption{font:11px/1.45 var(--font-mono);
+color:var(--muted)}
+.filmstrip-wrap{display:grid;
+grid-template-columns:44px minmax(0,1fr) 44px;
+gap:8px;
+align-items:center;
+margin-top:16px}
+.dots{display:flex;
+gap:5px;
+min-width:0;
+overflow-x:auto;
+overscroll-behavior-x:contain;
+scrollbar-width:thin;
+padding-bottom:2px}
+.dot{position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+flex:0 0 72px;
+width:72px;
+min-width:72px;
+height:48px;
+min-height:44px;
+padding:3px;
+border:1px solid var(--line);
+border-radius:0;
+background:#242426;
+opacity:.56;
+overflow:hidden;
+cursor:pointer;
+transition:opacity .2s,border-color .6s,background .2s}
+.dot:before,.dot:after{content:"";
+position:absolute;
+left:0;
+right:0;
+height:4px;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='4' viewBox='0 0 12 4'%3E%3Crect x='2' y='0' width='5' height='4' fill='%23F5F5F0' fill-opacity='.55'/%3E%3C/svg%3E");
+background-repeat:repeat-x;
+z-index:2}
+.dot:before{top:0}
+.dot:after{bottom:0}
+.dot img{width:100%;
+height:100%;
+object-fit:contain;
+filter:grayscale(1);
+opacity:.8}
+.dot[aria-current=true]{border:2px solid var(--accent);
+opacity:1;
+background:var(--festival-bg)}
+.dot[aria-current=true] img{filter:none;
+opacity:1}
+.arrow{display:flex;
+align-items:center;
+justify-content:center;
+width:44px;
+height:44px;
+min-width:44px;
+min-height:44px;
+border:1px solid var(--line);
+border-radius:0;
+background:transparent;
+color:var(--fg);
+font:20px/1 var(--font-mono);
+transition:background .2s,border-color .6s,color .2s}
+.arrow:hover{background:var(--accent);
+border-color:var(--accent);
+color:var(--ink)}
+
+.section{padding:var(--gap) 0}
+.section-label{margin-bottom:22px}
+.section h2{margin-bottom:30px}
+.section p,.narrow{max-width:var(--col)}
+.section-label{color:var(--fg)}
+.big-number{color:var(--accent);
+font-weight:700}
+.checks,.steps{gap:0;
+border-top:1px solid var(--ink);
+border-left:1px solid var(--ink)}
+#checks,#steps{background:var(--paper);
+color:var(--ink);
+width:100%;
+max-width:none;
+padding-left:max(16px,calc((100% - 1160px)/2));
+padding-right:max(16px,calc((100% - 1160px)/2))}
+#checks h2,#steps h2,#checks h3,#steps h3{color:var(--ink)}
+#checks .section-label,#steps .section-label{color:var(--ink)}
+#checks .section-label:before,#steps .section-label:before{color:var(--ink)}
+.check-card,.step-card{background:transparent;
+border:0;
+border-right:1px solid var(--ink);
+border-bottom:1px solid var(--ink);
+border-radius:0;
+padding:clamp(18px,3vw,30px);
+min-width:0}
+.check-card p,.step-card p{color:#35322e}
+.number,#checks .number,#steps .number{color:var(--ink)}
+.check-card:last-child{grid-column:1/-1}
+.note{border:1px solid var(--ink);
+border-radius:0}
+.step-card{border-top:0}
+.step-card .badge,.badge{border-color:var(--ink);
+border-radius:0;
+color:var(--ink)}
+#steps .badge{margin-bottom:22px}
+.case-grid{min-width:0}
+.movie-card,.festival-card,.note,.recommendation{border-radius:var(--radius)}
+.demo-wide{width:100%;
+max-width:min(1160px,calc(100% - 32px))}
+.demo{border-radius:var(--radius)}
+.demo-grid{min-width:0}
+.field{min-width:0}
+.field input,.field select,.field textarea{max-width:100%}
+.winner-table{min-width:0}
+.result-card,.winner-card,.email-preview{position:relative;
+border:1px solid var(--line);
+border-radius:var(--radius);
+overflow:visible}
+.result-card{padding:18px 18px 18px 22px}
+.result-card:before,.result-card:after,.winner-card:before,.winner-card:after,.email-preview:before,.email-preview:after{content:"";
+position:absolute;
+top:calc(50% - 9px);
+width:18px;
+height:18px;
+border-radius:50%;
+background:var(--bg);
+border:1px solid var(--line)}
+.result-card:before,.winner-card:before,.email-preview:before{left:-10px}
+.result-card:after,.winner-card:after,.email-preview:after{right:-10px}
+.winner-card:before,.winner-card:after{background:var(--bg)}
+.result-card .status{padding-bottom:12px;
+margin-bottom:12px;
+border-bottom:1px dashed var(--line)}
+.result-card h4{color:var(--fg)}
+.email-preview{padding:22px}
+.email-preview:before,.email-preview:after{background:var(--bg)}
+.calendar-layout{min-width:0}
+.calendar-shell{min-width:0}
+.calendar-scroll{max-width:100%;
+overflow-x:auto}
+.calendar-grid{min-width:320px}
+.calendar-countdown{display:flex;
+align-items:baseline;
+gap:12px;
+margin:0 0 18px}
+.calendar-countdown strong{font:700 clamp(2.5rem,7vw,5rem)/1 Oswald,sans-serif;
+color:var(--fg)}
+.calendar-countdown span{font:11px var(--font-mono);
+color:var(--muted)}
+.loading{display:inline-flex;
+align-items:center;
+gap:12px}
+.countdown-number{font:500 28px/1 var(--font-mono);
+min-width:32px;
+text-align:center}
+.loading .spinner{display:none}
+.footer{font:11px var(--font-mono)}
+
+@media(max-width:900px){.header-inner{padding-inline:16px}
+.nav-links,.header-deadline{display:none}
+.menu-toggle{display:flex}
+.mobile-menu{position:fixed;
+inset:0;
+z-index:60;
+background:var(--bg);
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:12px;
+padding:32px;
+transform:translateY(-102%);
+visibility:hidden;
+transition:transform .35s ease,visibility .35s}
+.mobile-menu.open{transform:translateY(0);
+visibility:visible}
+.mobile-menu>a{font:700 clamp(2.4rem,8vw,5rem)/1.05 Oswald,sans-serif;
+text-decoration:none;
+color:var(--fg)}
+.menu-close{position:absolute;
+top:12px;
+right:16px;
+width:48px;
+height:48px;
+border:1px solid var(--line);
+background:transparent;
+color:var(--fg);
+font-size:32px}
+.hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+gap:22px;
+padding-inline:24px}
+.hero-promise{font-size:17px}
+.carousel{height:min(46dvh,420px)}
+.festival-name{font-size:clamp(1.35rem,min(3.5vw,4vh),2.5rem)}
+.dots{gap:3px}
+.dot{padding:1px}
+.dot:before,.dot:after{height:3px}
+.section{padding:var(--gap) 0}
+.demo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:620px){.header-inner{height:64px}
+.brand{font-size:24px}
+.hero{height:auto;
+min-height:calc(100dvh - 70px);
+grid-template-columns:minmax(0,1fr);
+align-content:center;
+gap:16px;
+padding:22px 16px 20px}
+.hero-copy{display:contents}
+.eyebrow{order:0;
+margin:0}
+.hero h1{order:1;
+font-size:clamp(2.2rem,min(9vw,6vh),3.4rem);
+margin:0;
+max-width:100%}
+.hero-promise{order:2;
+font-size:16px;
+line-height:1.35;
+margin:0}
+.hero-actions{order:3}
+.hero-sub{display:block;
+order:4;
+font-size:12px;
+line-height:1.4;
+margin:0}
+.hero-festival{order:5;
+max-width:100%;
+justify-self:stretch}
+.carousel{height:clamp(180px,28dvh,240px);
+min-height:180px;
+grid-template-columns:minmax(0,68fr) minmax(94px,32fr);
+border-radius:12px}
+.ticket-main{padding:6px}
+.ticket-stub{padding:10px 8px}
+.festival-name{font-size:clamp(1.2rem,min(5.5vw,3vh),1.8rem)}
+.ticket-caption{font-size:10px}
+.slide-count{font-size:12px}
+.filmstrip-wrap{grid-template-columns:44px minmax(0,1fr) 44px;
+gap:5px;
+margin-top:10px}
+.dots{display:flex;
+gap:2px;
+overflow-x:auto}
+.dot{flex:0 0 72px;
+width:72px;
+min-width:72px;
+height:48px;
+min-height:44px;
+padding:0;
+border-width:1px}
+.dot img{object-fit:contain}
+.dot:before,.dot:after{background-size:9px 4px}
+.arrow{width:44px;
+height:44px}
+.section{padding:76px 0}
+.checks,.case-grid,.result-list{grid-template-columns:minmax(0,1fr)}
+#checks,#steps{padding-left:16px;
+padding-right:16px}
+.check-card:last-child{grid-column:auto}
+.check-card,.step-card{border-right:1px solid var(--ink)}
+.demo-wide{max-width:calc(100% - 32px)}
+.demo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.winner-table{font-size:12px}
+.winner-table th,.winner-table td{overflow-wrap:anywhere;
+padding:8px 4px}
+.calendar-layout{grid-template-columns:minmax(0,1fr)}
+.calendar-shell{padding:12px}
+.calendar-grid{min-width:320px}
+.email-preview{padding:18px}
+.calendar-countdown strong{font-size:2.7rem}
+.final{padding:76px 0 60px}
+}
+
+@media(max-width:360px){.hero{padding-inline:12px}
+.hero h1{font-size:2.05rem}
+.carousel{grid-template-columns:minmax(0,64fr) minmax(86px,36fr)}
+.ticket-stub{padding:8px 6px}
+.festival-name{font-size:1.1rem}
+.ticket-caption{font-size:10px}
+.dots{gap:1px}
+.dot{padding:0}
+.filmstrip-wrap{gap:3px;
+grid-template-columns:44px minmax(0,1fr) 44px}
+}
+
+@media(min-width:621px) and (max-height:760px){.hero{padding-top:14px;
+padding-bottom:14px;
+gap:28px}
+.hero h1{font-size:clamp(2.2rem, min(6.5vw, 10vh), 4.7rem);
+margin-bottom:12px}
+.hero-promise{margin-bottom:16px}
+.hero-sub{font-size:12px;
+margin-top:12px}
+.carousel{height:min(46dvh,380px);
+min-height:230px}
+.filmstrip-wrap{margin-top:10px}
+}
+
+@media(prefers-reduced-motion:reduce){.carousel{transition:none}
+.mobile-menu{transition:none}
+}
+
+
+
+/* Festival ticket refinements */
+:root{--ticket-line:2px;--ticket-runner-size:14px;--ticket-gap:8px;--ticket-frame-min:44px;--countdown-fade:200ms}
+.header-deadline{font:12px/1.5 var(--font-mono);display:flex;flex-direction:column;align-items:flex-end;gap:1px;max-width:330px;min-width:0}
+.header-deadline .countdown-copy{color:var(--fg);transition:opacity var(--countdown-fade) ease;}
+.header-deadline strong{color:var(--accent);font-weight:500}
+.header-deadline small{font:10px/1.3 var(--font-mono);color:var(--muted)}
+.header-deadline .countdown-note:empty{display:none}
+.mobile-countdown{display:none}
+.carousel{overflow:visible;grid-template-columns:minmax(0,72fr) minmax(92px,28fr);height:min(50dvh,460px);min-height:260px;max-height:460px;padding:0;border:0;border-radius:var(--radius);background:transparent;box-shadow:none}
+.ticket-main{padding:0;border:0;min-width:0;min-height:0}
+.ticket-main:before,.ticket-main:after{display:none}
+.ticket-logo-panel{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:clamp(14px,2vw,24px);background:var(--festival-bg);color:var(--festival-ink);border:0;border-radius:calc(var(--radius) - 4px) 0 0 calc(var(--radius) - 4px);overflow:hidden}
+.slide-image{display:none!important}
+.ticket-title-wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:clamp(10px,2vh,22px);width:100%;height:100%;min-width:0;color:var(--festival-ink)}
+.ticket-small-logo{display:block;width:auto;height:40px;max-width:min(100%,180px);object-fit:contain;object-position:left center;flex:0 0 auto}
+.ticket-small-logo.logo-missing{display:none}
+.ticket-main-title{font:700 clamp(1.8rem,min(5.8vw,8vh),4.5rem)/.98 Oswald,sans-serif;text-transform:uppercase;letter-spacing:-.025em;color:var(--festival-ink);max-width:100%;min-width:0;text-wrap:balance;hyphens:none;overflow-wrap:normal;word-break:normal;white-space:normal}
+.ticket-fallback{inset:12px;display:none!important}
+.ticket-stub{position:relative;z-index:1;min-width:0;padding:clamp(12px,2vw,24px) clamp(10px,1.7vw,20px);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;background:var(--festival-bg);color:var(--festival-ink);border-radius:0 calc(var(--radius) - 4px) calc(var(--radius) - 4px) 0;border-left:1px dashed var(--festival-ink)}
+.slide-count{font:500 13px/1.4 var(--font-mono);color:var(--festival-ink)}
+.ticket-caption{font:11px/1.45 var(--font-mono);color:var(--festival-ink);opacity:.8}
+.ticket-runner{position:absolute;inset:0;width:100%;height:100%;z-index:5;overflow:visible;pointer-events:none;--runner-rx:var(--radius)}
+.ticket-runner path{fill:none;vector-effect:non-scaling-stroke}
+.runner-base{stroke:var(--accent);stroke-width:2;opacity:.35}
+.runner-progress{stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100}
+.runner-dot{fill:var(--accent);stroke:var(--bg);stroke-width:3;vector-effect:non-scaling-stroke}
+.filmstrip-wrap{grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;margin-top:12px}
+.dots{display:grid;grid-template-columns:repeat(9,minmax(var(--ticket-frame-min),1fr));gap:var(--ticket-gap);min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;padding:2px 1px 5px}
+.dot{position:relative;display:flex;flex:initial;width:100%;min-width:var(--ticket-frame-min);height:48px;min-height:44px;padding:3px;border:1px solid var(--line);border-radius:0;background:#242426;opacity:.55;overflow:hidden;cursor:pointer;scroll-snap-align:start;transition:opacity .2s,border-color .2s,background .2s}
+.dot:before,.dot:after{content:"";position:absolute;left:0;right:0;height:4px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='4' viewBox='0 0 12 4'%3E%3Crect x='2' y='0' width='5' height='4' fill='%23F5F5F0' fill-opacity='.55'/%3E%3C/svg%3E");background-repeat:repeat-x;z-index:2}
+.dot:before{top:0}.dot:after{bottom:0}
+.dot img{width:100%;height:100%;object-fit:contain;filter:grayscale(1);opacity:.75}
+.dot[aria-current=true]{border:2px solid var(--accent);opacity:1;background:var(--festival-bg)}
+.dot[aria-current=true] img{filter:none;opacity:1}
+.dot .dot-number{font:500 12px var(--font-mono);color:var(--fg)}
+.arrow{min-width:44px;min-height:44px;width:44px;height:44px}
+/* Prize-gallery styles, scoped so other sections remain unchanged */
+.prize-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.prize-gallery img,.prize-card img{display:block;width:100%;height:100%;max-height:360px;object-fit:contain}
+.prize-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg)}
+@media(max-width:900px){.header-deadline#headerDeadlineChip{display:none}.mobile-countdown{display:flex;align-items:flex-start;max-width:100%;margin:0 0 10px;padding:0 2px}.mobile-countdown .countdown-copy{font-size:11px}.hero-festival{display:flex;flex-direction:column}.carousel{height:min(46dvh,420px)}}
+@media(max-width:620px){.hero-festival{order:5}.mobile-countdown{order:0}.carousel{height:clamp(180px,28dvh,240px);min-height:180px;grid-template-columns:minmax(0,68fr) minmax(86px,32fr);border-radius:12px}.ticket-main-title{font-size:clamp(1.2rem,min(5.5vw,3vh),1.8rem)}.ticket-small-logo{height:32px;max-width:100%}.ticket-logo-panel{padding:10px;border-radius:8px 0 0 8px}.ticket-stub{padding:10px 8px;border-radius:0 8px 8px 0}.ticket-caption{font-size:10px}.filmstrip-wrap{grid-template-columns:44px minmax(0,1fr) 44px;gap:5px;margin-top:10px}.dots{display:flex;gap:5px;overflow-x:auto}.dot{flex:0 0 64px;width:64px;min-width:64px;height:48px}.ticket-runner{border-radius:12px}}
+@media(max-width:360px){.ticket-main-title{font-size:1.1rem}.ticket-stub{padding:8px 6px}.dots{gap:4px}}
+@media(prefers-reduced-motion:reduce){.runner-progress{stroke-dashoffset:0!important}.runner-dot{display:none}.runner-base{opacity:1}.header-deadline .countdown-copy{transition:none}}
+
+
+/* Six-session color themes and lever control */
+html{--theme-transition:400ms}
+html,body,.site-header,.site-header .nav,.section,.hero,.step-card,.check-card,.result-card,.winner-card,.prize-card,.email-card,.calendar-shell,.calendar-grid,.field input,.field select,.field textarea,.primary,.secondary,.dot,.arrow,.ticket-logo-panel,.ticket-stub,.mobile-menu{transition:background-color var(--theme-transition) ease,color var(--theme-transition) ease,border-color var(--theme-transition) ease}
+body{color:var(--text);font-family:var(--font-text);font-size:var(--size)}
+.site-header{background:var(--bg);background-color:color-mix(in srgb,var(--bg) 94%,transparent)}
+.hero-sub{color:var(--text)}
+:root{--surface:#121214}
+html[data-theme="night"]{--bg:#0E0E10;--text:#F5F5F0;--fg:var(--text);--muted:#AAA9A5;--line:#343438;--surface:#121214;--paper:#F2EDE4;--ink:#141414;--accent-mode:slide}
+html[data-theme="white"]{--bg:#FFFFFF;--text:#111111;--fg:var(--text);--muted:#5A5A5A;--line:#D9D9D9;--surface:#F4F4F4;--paper:#141414;--ink:#F5F5F0;--accent-mode:slide}
+html[data-theme="bw"]{--bg:#0A0A0A;--text:#EDEDED;--fg:var(--text);--muted:#A0A0A0;--line:#333333;--surface:#141414;--paper:#E6E6E6;--ink:#111111;--accent:#FFFFFF;--accent-mode:fixed}
+html[data-theme="sepia"]{--bg:#1C1610;--text:#F1E3C8;--fg:var(--text);--muted:#B59F7E;--line:#4A3B2A;--surface:#241C14;--paper:#E9D9B8;--ink:#2A1F12;--accent:#E0A458;--accent-mode:fixed}
+html[data-theme="techni"]{--bg:#0B1F2A;--text:#F4EFE6;--fg:var(--text);--muted:#9FB4BC;--line:#25414E;--surface:#10303F;--paper:#F4E3CF;--ink:#10222B;--accent:#FF8A3D;--accent-mode:fixed}
+html[data-theme="curtain"]{--bg:#2A0E14;--text:#F6E9E4;--fg:var(--text);--muted:#C7A5A5;--line:#5A2A33;--surface:#34131B;--paper:#F3E6DA;--ink:#2A0E14;--accent:#F2C14E;--accent-mode:fixed}
+body,.section,.hero,.site-header{background-color:var(--bg);color:var(--text)}
+.section-label,.eyebrow,.hero-promise{color:var(--accent)}
+.step-card,.check-card{background:transparent;color:var(--ink);border-color:var(--ink)}
+.result-card,.winner-card,.prize-card,.email-card,.calendar-shell,.field input,.field select,.field textarea,.demo{background-color:var(--surface);color:var(--text);border-color:var(--line)}
+#checks,#steps{background-color:var(--paper);color:var(--ink)}
+#checks h2,#steps h2,#checks h3,#steps h3,#checks .section-label,#steps .section-label,#checks .check-card p,#steps .step-card p,#checks .number,#steps .number{color:var(--ink)}
+#checks .check-card,#steps .step-card{background:transparent;border-color:var(--ink)}
+.paper,.paper-block,.section.paper-section{background-color:var(--paper);color:var(--ink)}
+.paper h1,.paper h2,.paper h3,.paper p,.paper .muted,.paper-block h1,.paper-block h2,.paper-block h3,.paper-block p{color:var(--ink)}
+.dot{background:var(--surface)}
+.dot:before,.dot:after{background-color:var(--line)}
+.dot .dot-number{color:var(--text)}
+.ticket-logo-panel,.ticket-stub{transition:background-color var(--theme-transition) ease,color var(--theme-transition) ease}
+html[data-theme="bw"] .ticket-logo-panel,html[data-theme="bw"] .ticket-stub{background:var(--surface)!important;color:var(--text)!important;--festival-ink:var(--text)}
+html[data-theme="bw"] .ticket-logo-panel img,html[data-theme="bw"] .prize-gallery img,html[data-theme="bw"] .prize-card img,html[data-theme="bw"] .dot img{filter:grayscale(1)!important}
+.theme-lever{display:flex;align-items:center;justify-content:center;flex:0 0 64px;width:64px;height:56px;min-width:44px;min-height:44px;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text)}
+.theme-lever svg{display:block;width:64px;height:56px;overflow:visible}
+.lever-slot{fill:var(--bg);stroke:var(--muted);stroke-width:1.5}
+.theme-lamps circle{fill:var(--line);stroke:var(--muted);stroke-width:.7}
+.theme-lamps circle.active{fill:var(--accent);stroke:var(--accent)}
+.lever-stem{stroke:var(--text);stroke-width:3;stroke-linecap:round}
+.lever-ball{fill:var(--accent);stroke:var(--text);stroke-width:1.5}
+.lever-reel{fill:none;stroke:var(--accent);stroke-width:1.5;transform-origin:52px 39px}
+.lever-reel.spinning{animation:reel-spin 400ms ease-in-out}
+.lever-handle{transform:translateY(0);transition:transform 300ms cubic-bezier(.2,.8,.2,1)}
+.theme-lever.dragging .lever-handle{transition:none}
+.theme-announcement{position:fixed;z-index:50;top:74px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:8px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);font:12px/1.5 var(--font-mono);pointer-events:none;opacity:0;transition:opacity 200ms ease;text-align:center}
+.theme-announcement.visible{opacity:1}
+@keyframes reel-spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.theme-lever{position:fixed;right:16px;bottom:16px;z-index:60;width:56px;height:56px;min-width:56px;min-height:56px;flex-basis:56px;border-radius:50%;box-shadow:none}.theme-lever svg{width:56px;height:56px}.theme-lamps{transform:translate(-4px,2px) scale(.86);transform-origin:center}.lever-reel{display:none}.theme-announcement{top:74px}}
+@media(prefers-reduced-motion:reduce){html,body,.site-header,.site-header .nav,.section,.hero,.step-card,.check-card,.result-card,.winner-card,.prize-card,.email-card,.calendar-shell,.calendar-grid,.field input,.field select,.field textarea,.primary,.secondary,.dot,.arrow,.ticket-logo-panel,.ticket-stub,.mobile-menu,.lever-handle,.theme-announcement{transition:none!important}.lever-reel.spinning{animation:none}}
+
+</style>
+</head>
+<body>
+<div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-fill" id="scrollProgressFill"></div></div>
+<header class="site-header"><div class="nav header-inner">
+<a class="brand" href="#top" aria-label="ФестКадр — на главную"><svg class="brand-mark" viewBox="0 0 28 24" aria-hidden="true"><rect x="1.5" y="1.5" width="25" height="21" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 1.5v21M22 1.5v21M1.5 7h4.5M1.5 12h4.5M1.5 17h4.5M22 7h4.5M22 12h4.5M22 17h4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>ФестКадр</span></a>
+<nav class="nav-links" aria-label="Основная навигация"><a href="#carousel">Фестивали</a><a href="#steps">Как работаем</a><a href="#recommendations">Рекомендации</a><a href="#calendar">Календарь</a></nav>
+<div class="header-deadline" id="headerDeadlineChip"><span class="countdown-copy" id="headerCountdownCopy">До начала фестиваля: <strong id="headerCountdown">—</strong></span><small>пример</small><small class="countdown-note" id="headerCountdownNote"></small></div>
+<button class="theme-lever" id="themeLever" type="button" role="button" aria-label="Сменить цветовую тему" title="Сменить цветовую тему"><svg viewBox="0 0 64 56" aria-hidden="true"><rect class="lever-slot" x="25" y="8" width="14" height="38" rx="7"/><g class="theme-lamps"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="27" cy="7" r="3"/><circle cx="37" cy="7" r="3"/><circle cx="47" cy="7" r="3"/><circle cx="57" cy="7" r="3"/></g><g class="lever-handle" id="leverHandle"><path class="lever-stem" d="M32 15V35"/><circle class="lever-ball" cx="32" cy="35" r="7"/></g><g class="lever-reel" id="leverReel"><circle cx="52" cy="39" r="7"/><circle cx="52" cy="39" r="2"/><path d="M52 32v3M52 43v3M45 39h3M56 39h3"/></g></svg></button>
+<button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span></button>
+</div></header>
+<div id="themeAnnouncement" class="theme-announcement" aria-live="polite" aria-atomic="true"></div>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Мобильное меню" aria-hidden="true"><button class="menu-close" id="menuClose" type="button" aria-label="Закрыть меню">×</button><a href="#carousel">Фестивали</a><a href="#steps">Как работаем</a><a href="#recommendations">Рекомендации</a><a href="#calendar">Календарь</a></nav>
+<main id="top">
+<section class="hero wrap" aria-label="ФестКадр — подбор кинофестивалей">
+<div class="hero-copy"><div class="eyebrow">Инструмент для независимого кино</div>
+<h1>Твой фильм — его фестиваль</h1>
+<p class="hero-promise">Сосредоточься на фильме, а не на бесконечных таблицах.</p>
+<div class="hero-actions"><a class="primary" href="#recommendations">Найти свой фестиваль ↗</a></div>
+<p class="hero-sub">Подбери подходящие кинофестивали, рассчитай стоимость подачи и спланируй свой фестивальный маршрут.</p></div>
+<div class="hero-festival"><div class="mobile-countdown header-deadline" id="mobileDeadlineChip"><span class="countdown-copy" id="mobileCountdownCopy">До начала фестиваля: <strong id="mobileCountdown">—</strong></span><small>пример</small><small class="countdown-note" id="mobileCountdownNote"></small></div><div class="carousel" id="carousel" tabindex="0" aria-roledescription="карусель" aria-label="Фестивали">
+<div class="ticket-main"><div class="ticket-logo-panel"><img class="slide-image" id="slideImage" src="img/korotche.png" alt="Логотип фестиваля «Короче»" width="480" height="300" fetchpriority="high"><div class="ticket-fallback" id="ticketFallback" aria-hidden="true">Короче</div><div class="ticket-title-wrap"><img class="ticket-small-logo" id="ticketSmallLogo" src="img/korotche.png" alt="" aria-hidden="true"><div class="ticket-main-title" id="festivalName">КОРОЧЕ</div></div></div></div>
+<div class="ticket-stub"><div class="slide-count" id="slideCount" aria-live="polite">01/09</div><div class="ticket-caption">Условия подачи<br>в справочнике</div></div><svg class="ticket-runner" id="ticketRunner" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none"><path class="runner-base" d="M 4 1 H 96 Q 99 1 99 4 V 96 Q 99 99 96 99 H 4 Q 1 99 1 96 V 4 Q 1 1 4 1 Z"/><path class="runner-progress" d="M 4 1 H 96 Q 99 1 99 4 V 96 Q 99 99 96 99 H 4 Q 1 99 1 96 V 4 Q 1 1 4 1 Z"/><circle class="runner-dot" r="2.5" cx="50" cy="1"/></svg></div><div class="filmstrip-wrap"><button class="arrow" id="prev" type="button" aria-label="Предыдущий фестиваль">←</button><div class="dots" id="dots" aria-label="Выбрать фестиваль"></div><button class="arrow" id="next" type="button" aria-label="Следующий фестиваль">→</button></div></div>
+</section>
+
+<section class="section wrap reveal" id="problem"><div class="section-label">00:01:00 · Проблема</div><div class="split">
+<div class="narrow"><h2>Неделя на то, чтобы понять, куда подавать</h2>
+<p>Когда фильм готов, начинается вторая работа: выбрать фестиваль. У каждого свои правила, своя длительность, свои сроки. Я собирал российские фестивали вручную. В Excel заносил хронометраж и дедлайны по каждому фестивалю, перестраивал таблицу, переписывал формулы. Без нейросети на это уходит около недели. С ней получается за день, но всё равно приходится постоянно что-то поправлять и перепроверять. Готовые сервисы стоят денег, а время на каждый фестиваль всё равно уходит. А ведь у вас на это времени нет: фильм надо показывать, пока он свежий.</p></div>
+<div class="big-number">7 дней<br>→ 1 минута</div></div></section>
+
+<section class="section wrap reveal" id="checks"><div class="section-label">00:02:00 · Критерии</div><h2>Пять проверок до подачи</h2>
+<div class="checks">
+<article class="check-card"><span class="number">1</span><h3>Жанр</h3><p>Подходит ли ваш фильм по теме и жанру тому, что фестиваль обычно берёт в программу.</p></article>
+<article class="check-card"><span class="number">2</span><h3>Короткий метр или полный</h3><p>У многих фестивалей это разные конкурсы с разными правилами.</p></article>
+<article class="check-card"><span class="number">3</span><h3>Хронометраж</h3><p>Если лимит фестиваля 25 минут, а ваш фильм идёт 40, его не рассматривают вообще, как бы он ни был хорош.</p></article>
+<article class="check-card"><span class="number">4</span><h3>Дедлайн</h3><p>Закрытый приём заявок нельзя продлить. Это самая обидная причина отказа.</p></article>
+<article class="check-card"><span class="number">5</span><h3>Премьерный статус</h3><p>Это требование, чтобы фильм ещё нигде не показывали публично (в России, в мире или на конкретной площадке, у каждого фестиваля своё условие); если вы нарушите его, заявку снимут с конкурса, а в худшем случае вас не пустят на фестиваль и в будущем.</p></article>
+</div><div class="note">Начинайте с крупных фестивалей и спускайтесь вниз по значимости. Обратный путь не работает: после показа на небольшом фестивале премьерный статус для крупных вы уже потеряли.</div></section>
+
+<section class="section wrap reveal" id="example"><div class="section-label">00:03:00 · Пример</div><h2>Фильм на 40 минут и лимит в 25</h2>
+<div class="case-grid"><article class="movie-card"><div class="eyebrow">Карточка фильма</div><div class="movie-title">Тихий час</div><p class="muted">Документальный</p>
+<ul class="facts"><li><span>Хронометраж</span><span>40 минут</span></li><li><span>Бюджет на подачи</span><span>15 000 ₽</span></li><li><span>Готовность</span><span>В сентябре</span></li><li><span>Показы</span><span>Нигде не показывался</span></li></ul></article>
+<div class="festival-options"><article class="festival-card"><span class="status bad">Не проходит: лимит 25 минут</span><h3>Фестиваль с коротким конкурсом</h3><p>Хронометраж фильма превышает допустимый лимит.</p></article>
+<article class="festival-card"><span class="status good">Подходит</span><h3>Фестиваль с открытым лимитом</h3><p>Можно подавать документальный фильм такой длины.</p></article></div></div>
+<p class="case-copy">Режиссёр Мария сняла документальный фильм о ночных сменах в районной больнице. Она могла потратить взнос, ждать ответа два месяца и получить отказ без объяснений. Вместо этого она за минуту увидела, что 40 минут выходят за лимит, и сразу перешла к фестивалям, где принимают фильмы такой длины. Деньги остались в бюджете, премьерный статус сохранён для более крупного фестиваля. Отказ часто случается ещё до того, как кто-то посмотрел фильм. Мы помогаем его предотвратить.</p></section>
+
+<section class="section wrap reveal" id="steps"><div class="section-label">00:04:00 · Решение</div><h2>Как мы работаем</h2>
+<p class="narrow">Сегодня выбор фестивалей решается по двум схемам: купить готовый сервис или пользоваться фильтрами на сайтах. Ни та ни другая не ведёт вас дальше выбора. Мы работаем в три шага.</p>
+<div class="steps">
+<article class="step-card" ><span class="number">01</span><span class="badge">Бесплатно</span><h3>Список фестивалей</h3><p>Открыт всем, названия, сроки, условия.</p></article>
+<article class="step-card" ><span class="number">02</span><span class="badge">Платно</span><h3>Рекомендации</h3><p>Вы вводите данные о фильме и его синопсис, а нейросеть сравнивает тему и сюжет с фильмами, которые побеждали на фестивалях в прошлом году, и пишет рекомендации: куда подавать, а куда не стоит и почему.</p></article>
+<article class="step-card" ><span class="number">03</span><span class="badge">Платно</span><h3>Проводник</h3><p>Ведём вас до самой подачи. На каждом этапе говорим, что делать сейчас, когда это нужно сделать и какого ответа ждать, а какого ждать не стоит. Напоминания приходят на почту и в календарь.</p></article>
+</div></section>
+
+<section class="section wrap reveal" id="recommendations"><div class="section-label">00:05:00 · Демо</div><h2>Рекомендации: попробуйте</h2>
+<p class="demo-intro">Нейросеть читает синопсис вашего фильма и сверяет его с тем, какие фильмы побеждали в прошлом году в номинациях фестивалей.</p>
+<div class="demo-wide"><div class="demo">
+<form id="filterForm"><div class="demo-grid">
+<div class="field"><label for="filmType">Тип</label><select id="filmType"><option value="short" selected>Короткий метр</option><option value="full">Полный метр</option></select></div>
+<div class="field"><label for="runtime">Хронометраж в минутах</label><input id="runtime" type="number" min="1" max="600" value="40" required></div>
+<div class="field"><label for="theme">Тема</label><select id="theme"><option value="documentary" selected>Документальное</option><option value="drama">Драма</option><option value="animation">Анимация</option></select></div>
+<div class="field"><label for="premiere">Премьерный статус</label><select id="premiere"><option value="yes" selected>Да</option><option value="no">Нет</option></select></div>
+<div class="field"><label for="budget">Бюджет, ₽</label><input id="budget" type="number" min="0" step="500" value="15000" required></div>
+<div class="field synopsis-field"><label for="synopsis">Синопсис фильма</label><textarea id="synopsis" rows="4" required>Три ночных смены в районной больнице. Медсестра, санитар и дежурный врач ухаживают за пациентами, которых некому навестить. Фильм без интервью и закадрового голоса, камера просто остаётся рядом.</textarea></div>
+</div><button class="primary" id="submitBtn" type="submit">Получить рекомендации</button></form>
+<div class="results-section"><div class="results-head"><h3>1. Проверка условий</h3><span class="muted" id="resultCount" style="font-size:12px">6 фестивалей-примеров</span></div>
+<div class="result-list" id="results" aria-live="polite"></div>
+<div class="budget-line" id="budgetLine"><span>Итого на подачу: <span id="budgetTotal">—</span></span><span id="budgetStatus"></span></div></div>
+<div class="results-section" id="winnersSection"><div class="results-head"><h3>2. Победители прошлого года</h3><span class="example-label">Пример</span></div><div id="winnersResults" class="winner-list" aria-live="polite"></div></div>
+<article class="recommendation" aria-live="polite"><h3>3. Рекомендации нейросети</h3><p id="recommendationText"></p></article>
+<p class="demo-note">Нейросеть сравнивает тему и синопсис вашего фильма с прошлогодними победителями. Это совпадение по теме, а не вероятность победы. Фильмы и данные в примере вымышленные.</p>
+</div></div></section>
+<section class="section wrap reveal" id="calendar"><div class="section-label">00:06:00 · Сопровождение</div><h2>Напоминания: календарь подачи</h2>
+<div class="calendar-layout"><div>
+<div class="calendar-shell"><div class="calendar-countdown"><strong id="calendarCountdownValue">31 д 04 ч</strong><span>пример</span></div><div class="calendar-title"><h3>Ноябрь 2026</h3><span class="example-label">Пример</span></div>
+<div class="calendar-scroll"><div class="calendar-grid" id="calendarGrid" aria-label="Календарь дедлайнов на ноябрь 2026"></div></div>
+<div class="calendar-legend"><span><i class="legend-dot" style="--c:#FFD60A"></i>За 7 дней</span><span><i class="legend-dot" style="--c:#FF6B45"></i>За 1 день</span><span><i class="legend-dot" style="--c:#FF3B30"></i>Дедлайн</span></div>
+<div class="email-preview" id="emailPreview" aria-live="polite"><h3 id="emailSubject">Выберите дату с пометкой</h3><p id="emailBody">Нажмите на цветную дату, чтобы посмотреть пример напоминания.</p></div>
+</div>
+<p class="after-submit">После подачи: ответ обычно приходит через 1–2 месяца. Молчание не означает отказ</p>
+<div class="switch-row"><span>Напоминать на почту и в календарь</span><button type="button" class="switch" id="reminderSwitch" role="switch" aria-checked="false" aria-label="Напоминать на почту и в календарь"></button></div>
+<p class="switch-message" id="switchMessage" hidden>Письма придут за 7 дней, за 1 день и в день дедлайна. Календарь: файл .ics</p>
+</div>
+<div class="narrow"><p>Мы постоянно напоминаем, показываем следующий шаг и объясняем, чего ждать на каждом этапе, пока ваша заявка не уйдёт.</p></div></div>
+</section>
+
+<section class="final wrap reveal" id="contacts"><div class="section-label">00:07:00 · Контакты</div><h2>Фестиваль не ждёт, поэтому мы напомним</h2>
+<p class="final-sub">От списка до подачи: не теряйте сроки и деньги. Хотите обсудить сервис или свой фильм? Пишите:</p>
+<div class="contact-links"><a class="contact" href="[ВСТАВЬТЕ_ССЫЛКУ]" target="_blank" rel="noopener noreferrer">Telegram ↗</a><a class="contact" href="[ВСТАВЬТЕ_ССЫЛКУ]" target="_blank" rel="noopener noreferrer">ВК или Instagram ↗</a><a class="contact" href="mailto:[ВСТАВЬТЕ_ПОЧТУ]">Почта ↗</a></div></section>
+</main>
+<footer class="footer"><div class="wrap">Логотипы и изображения принадлежат их правообладателям.</div></footer>
+
+<script>
+(() => {
+const slides=[
+{name:"Короче",src:"img/korotche.png",color:"#F04438",accent:"#FF6257",bg:"#F4F0E9",ink:"#171717",font:"Oswald, sans-serif",letterSpacing:"-.055em",start:"2026-08-18",end:"2026-08-23"},
+{name:"Послание к Человеку",src:"img/poslanie.jpg",color:"#6B2433",accent:"#E98DA0",bg:"#F5F1E8",ink:"#65182A",font:"Georgia, serif",letterSpacing:"-.035em",start:"2026-10-16",end:"2026-10-24"},
+{name:"Окно в Европу",src:"img/okno.png",color:"#0A5D7D",accent:"#55BDE3",bg:"#FFFFFF",ink:"#101820",font:"Inter, sans-serif",letterSpacing:"-.045em",start:"2026-08-04",end:"2026-08-09"},
+{name:"Зеркало",src:"img/zerkalo.png",color:"#D6D6D6",accent:"#E6E6E6",bg:"#050505",ink:"#FFFFFF",font:"Oswald, sans-serif",letterSpacing:"-.06em",start:"2026-06-26",end:"2026-06-30"},
+{name:"Горький fest",src:"img/gorky.jpg",color:"#32B0C9",accent:"#42D0E8",bg:"#32B0C9",ink:"#FFFFFF",font:"Georgia, serif",letterSpacing:"-.045em",start:"2026-07-03",end:"2026-07-10"},
+{name:"Суздальфест",src:"img/suzdalfest.png",color:"#426F6C",accent:"#7EC6BD",bg:"#F0EBDD",ink:"#315F5C",font:"Georgia, serif",letterSpacing:"-.04em",start:"2026-03-18",end:"2026-03-23"},
+{name:"ММКФ",src:"img/mmkf.jpg",color:"#D51F2A",accent:"#FF606A",bg:"#F9F6F3",ink:"#C71926",font:"Arial, sans-serif",letterSpacing:"-.055em",start:"2026-04-16",end:"2026-04-23"},
+{name:"Дух огня",src:"img/duh-ognya.jpeg",color:"#D52D74",accent:"#FF70AC",bg:"#F7F7F2",ink:"#30302D",font:"Inter, sans-serif",letterSpacing:"-.04em",start:"2026-03-12",end:"2026-03-16"},
+{name:"Маяк",src:"img/mayak.webp",color:"#FFFFFF",accent:"#F5F5F0",bg:"#080808",ink:"#FFFFFF",font:"Inter, sans-serif",letterSpacing:".08em",start:"",end:""}
+]
+let current=0,timer=null,rafId=0,slideStarted=0,paused=false;
+const root=document.documentElement,carousel=document.getElementById("carousel"),image=document.getElementById("slideImage"),title=document.getElementById("festivalName"),count=document.getElementById("slideCount"),dots=document.getElementById("dots"),ticketFallback=document.getElementById("ticketFallback"),smallLogo=document.getElementById("ticketSmallLogo"),runner=document.getElementById("ticketRunner"),runnerBase=runner.querySelector(".runner-base"),runnerProgress=runner.querySelector(".runner-progress"),runnerDot=runner.querySelector(".runner-dot");
+const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)"),slideDuration=5000;
+const headerCopy=document.getElementById("headerCountdownCopy"),headerValue=document.getElementById("headerCountdown"),headerNote=document.getElementById("headerCountdownNote"),mobileCopy=document.getElementById("mobileCountdownCopy"),mobileValue=document.getElementById("mobileCountdown"),mobileNote=document.getElementById("mobileCountdownNote");
+function localDate(iso,endOfDay=false){if(!iso)return null;const [y,m,d]=iso.split("-").map(Number);return new Date(y,m-1,d,endOfDay?23:0,endOfDay?59:0,endOfDay?59:0)}
+function pad(n){return String(n).padStart(2,"0")}
+function festivalCountdown(s){
+ if(!s.start||!s.end)return {label:"Даты фестиваля уточняются",value:"",note:""};
+ const now=new Date(),start=localDate(s.start),end=localDate(s.end,true);
+ let target,ms,label,note="";
+ if(now<start){target=start;ms=target-now;label="До начала фестиваля: "+Math.floor(ms/86400000)+" д "+pad(Math.floor(ms%86400000/3600000))+" ч "+pad(Math.floor(ms%3600000/60000))+" мин"}
+ else if(now<=end){target=end;ms=target-now;label="Фестиваль идёт: до закрытия "+Math.floor(ms/86400000)+" д "+pad(Math.floor(ms%86400000/3600000))+" ч"}
+ else{target=localDate(String(Number(s.start.slice(0,4))+1)+s.start.slice(4));ms=target-now;label="До начала следующего выпуска: "+Math.floor(ms/86400000)+" д "+pad(Math.floor(ms%86400000/3600000))+" ч "+pad(Math.floor(ms%3600000/60000))+" мин";note="ориентир по датам 2026 г."}
+ return {label,value:label,note};
+}
+function updateFestivalCountdown(animate=false){const data=festivalCountdown(slides[current]);[[headerCopy,headerValue,headerNote],[mobileCopy,mobileValue,mobileNote]].forEach(([copy,value,note])=>{if(!copy)return;if(animate){copy.style.opacity="0";setTimeout(()=>{copy.innerHTML=data.value?data.label.replace(data.value.slice(data.value.indexOf(":")+1).trim(),'<strong>'+data.value.slice(data.value.indexOf(":")+1).trim()+'</strong>'):data.label;copy.style.opacity="1";note.textContent=data.note},200)}else{const idx=data.label.indexOf(":");copy.innerHTML=idx>=0?data.label.slice(0,idx+1)+' <strong>'+data.label.slice(idx+1).trim()+'</strong>':data.label;note.textContent=data.note}})}
+function setRunnerProgress(progress){if(!runner||!carousel)return;const rect=carousel.getBoundingClientRect(),w=Math.max(1,rect.width),h=Math.max(1,rect.height);runner.setAttribute("viewBox",`0 0 ${w} ${h}`);const inset=1.5,rad=Math.min(16,parseFloat(getComputedStyle(carousel).borderRadius)||16),path=`M ${inset+rad} ${inset} H ${w-inset-rad} Q ${w-inset} ${inset} ${w-inset} ${inset+rad} V ${h-inset-rad} Q ${w-inset} ${h-inset} ${w-inset-rad} ${h-inset} H ${inset+rad} Q ${inset} ${h-inset} ${inset} ${h-inset-rad} V ${inset+rad} Q ${inset} ${inset} ${inset+rad} ${inset}`;[runnerBase,runnerProgress].forEach(el=>el.setAttribute("d",path));const len=runnerProgress.getTotalLength();runnerProgress.style.strokeDasharray=String(len);runnerProgress.style.strokeDashoffset=String(len*(1-progress));const point=runnerProgress.getPointAtLength(len*progress);runnerDot.setAttribute("cx",point.x);runnerDot.setAttribute("cy",point.y);if(reduceMotion.matches){runnerProgress.style.strokeDashoffset="0";runnerDot.style.display="none";runnerBase.style.opacity="1"}else runnerDot.style.display="block"}
+function runnerFrame(now){if(!paused&&!reduceMotion.matches){const p=Math.min(1,(now-slideStarted)/slideDuration);setRunnerProgress(p);if(p<1)rafId=requestAnimationFrame(runnerFrame)}else setRunnerProgress(0)}
+function startRunner(){cancelAnimationFrame(rafId);slideStarted=performance.now();setRunnerProgress(0);if(!paused&&!reduceMotion.matches)rafId=requestAnimationFrame(runnerFrame)}
+function showSlide(i){
+ current=(i+slides.length)%slides.length;const s=slides[current];if(window.applyFestKadrThemeAccent)window.applyFestKadrThemeAccent(s);else root.style.setProperty("--accent",s.accent);title.textContent=s.name.toLocaleUpperCase("ru-RU");count.textContent=String(current+1).padStart(2,"0")+"/09";ticketFallback.textContent=s.name;
+ carousel.style.setProperty("--festival-bg",s.bg);carousel.style.setProperty("--festival-ink",s.ink);carousel.style.setProperty("--festival-color",s.color);carousel.style.setProperty("--festival-font",s.font);carousel.style.setProperty("--festival-letter-spacing",s.letterSpacing);
+ carousel.classList.remove("is-entering");void carousel.offsetWidth;carousel.classList.add("is-entering");setTimeout(()=>carousel.classList.remove("is-entering"),400);
+ smallLogo.classList.remove("logo-missing");smallLogo.style.display="block";smallLogo.onerror=()=>{smallLogo.classList.add("logo-missing")};smallLogo.src=s.src;smallLogo.alt="";
+ image.style.display="none";image.onerror=()=>{image.style.display="none";ticketFallback.style.display="flex"};image.src=s.src;image.alt="Логотип фестиваля «"+s.name+"»";
+ [...dots.children].forEach((d,j)=>{d.setAttribute("aria-current",String(j===current));d.setAttribute("aria-label","Показать фестиваль: "+slides[j].name)});
+ updateFestivalCountdown(true);startRunner();
+}
+slides.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.className="dot";b.setAttribute("aria-label","Показать фестиваль: "+s.name);const thumb=document.createElement("img");thumb.src=s.src;thumb.alt="";thumb.loading="lazy";thumb.width=72;thumb.height=48;thumb.onerror=()=>{thumb.style.display="none";const n=document.createElement("span");n.className="dot-number";n.textContent=String(i+1).padStart(2,"0");b.appendChild(n)};b.appendChild(thumb);b.addEventListener("click",()=>{showSlide(i);restart()});dots.appendChild(b)});
+function restart(){clearInterval(timer);if(!paused&&!reduceMotion.matches)timer=setInterval(()=>showSlide(current+1),slideDuration)}
+document.getElementById("prev").addEventListener("click",()=>{showSlide(current-1);restart()});document.getElementById("next").addEventListener("click",()=>{showSlide(current+1);restart()});
+let touchX=0;carousel.addEventListener("touchstart",e=>touchX=e.changedTouches[0].clientX,{passive:true});carousel.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>45){showSlide(current+(dx<0?1:-1));restart()}},{passive:true});
+function pauseCarousel(){paused=true;clearInterval(timer);cancelAnimationFrame(rafId)}function resumeCarousel(){if(!carousel.matches(":hover")&&!carousel.contains(document.activeElement)){paused=false;startRunner();restart()}}
+carousel.addEventListener("mouseenter",pauseCarousel);carousel.addEventListener("mouseleave",resumeCarousel);carousel.addEventListener("focusin",pauseCarousel);carousel.addEventListener("focusout",e=>{if(!carousel.contains(e.relatedTarget))resumeCarousel()});window.addEventListener("resize",()=>setRunnerProgress(Math.min(1,(performance.now()-slideStarted)/slideDuration)));
+showSlide(0);restart();setInterval(()=>updateFestivalCountdown(false),30000);
+const deadline=new Date("2026-11-20T23:59:00");
+function countdownText(){const ms=deadline.getTime()-Date.now();if(ms<=0)return "Дедлайн прошёл";const total=Math.floor(ms/60000),days=Math.floor(total/1440),hours=Math.floor((total%1440)/60),mins=total%60;return days+" д "+String(hours).padStart(2,"0")+" ч "+String(mins).padStart(2,"0")+" мин"}
+function updateCountdown(){const big=document.getElementById("calendarCountdownValue");if(big){const t=countdownText();big.textContent=t.includes("Дедлайн")?t:t.replace(/ \d{2} мин$/,"")}}
+updateCountdown();setInterval(updateCountdown,60000);
+const progressFill=document.getElementById("scrollProgressFill");function updateProgress(){const max=document.documentElement.scrollHeight-window.innerHeight;progressFill.style.width=(max>0?Math.min(100,Math.max(0,window.scrollY/max*100)):0)+"%"}window.addEventListener("scroll",updateProgress,{passive:true});window.addEventListener("resize",updateProgress);updateProgress();
+const menu=document.getElementById("mobileMenu"),menuToggle=document.getElementById("menuToggle"),menuClose=document.getElementById("menuClose");
+function closeMenu(){menu.classList.remove("open");menu.setAttribute("aria-hidden","true");menuToggle.setAttribute("aria-expanded","false");menuToggle.setAttribute("aria-label","Открыть меню");document.body.classList.remove("menu-open")}
+function openMenu(){menu.classList.add("open");menu.setAttribute("aria-hidden","false");menuToggle.setAttribute("aria-expanded","true");menuToggle.setAttribute("aria-label","Закрыть меню");document.body.classList.add("menu-open");menu.querySelector("a").focus()}
+menuToggle.addEventListener("click",()=>menu.classList.contains("open")?closeMenu():openMenu());menuClose.addEventListener("click",closeMenu);menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMenu));document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
+
+const festivals=[
+{name:"Фестиваль А",limit:60,types:["short","full"],themes:["documentary","drama"],deadline:"2026-11-20",fee:1500,premiere:false},
+{name:"Фестиваль Б",limit:90,types:["short","full"],themes:["documentary","drama","animation"],deadline:"2026-11-20",fee:2500,premiere:true},
+{name:"Фестиваль В",limit:25,types:["short"],themes:["drama","animation"],deadline:"2026-12-01",fee:1000,premiere:false},
+{name:"Фестиваль Г",limit:45,types:["short"],themes:["documentary","drama","animation"],deadline:"2026-10-13",fee:2000,premiere:true},
+{name:"Фестиваль Д",limit:120,types:["full"],themes:["documentary","animation"],deadline:"2026-08-01",fee:3000,premiere:true},
+{name:"Фестиваль Е",limit:40,types:["short","full"],themes:["documentary","drama"],deadline:"2026-12-15",fee:4000,premiere:false}
+];
+const money=n=>new Intl.NumberFormat("ru-RU").format(n)+" ₽";
+const dateLabel=d=>new Date(d+"T12:00:00").toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
+function evaluate(f,film){
+if(!f.types.includes(film.type))return "тип фильма не подходит";
+if(film.runtime>f.limit)return "лимит "+f.limit+" минут";
+if(f.deadline<"2026-10-15")return "дедлайн прошёл";
+if(!f.themes.includes(film.theme))return "тема не входит в профиль";
+if(f.premiere&&!film.premiere)return "нужна мировая премьера";
+return "";
+}
+const winners={
+"Фестиваль А":[
+{nom:"Документальный фильм",title:"Ночная смена",topic:"врач скорой, ночные вызовы",match:"close",label:"близко по теме"},
+{nom:"Дебют",title:"Дальний рейс",topic:"дальнобойщики, дорога, одиночество",match:"far",label:"далеко"}
+],
+"Фестиваль Б":[
+{nom:"Лучший документальный короткий метр",title:"Тихий двор",topic:"пожилые люди в доме престарелых",match:"close",label:"близко по теме"},
+{nom:"Приз зрительских симпатий",title:"Рыбалка",topic:"комедия об отпуске и друзьях",match:"far",label:"далеко"}
+],
+"Фестиваль Е":[
+{nom:"Документальный взгляд",title:"Последний этаж",topic:"повседневная жизнь городских соседей",match:"partial",label:"частично"},
+{nom:"Лучший дебют",title:"Тихая вода",topic:"семья, память, возвращение домой",match:"far",label:"далеко"}
+],
+"Фестиваль В":[{nom:"Лучший короткий метр",title:"Линия горизонта",topic:"молодые люди ищут себя",match:"partial",label:"частично"},{nom:"Эксперимент",title:"Пластичный город",topic:"анимация о большом городе",match:"far",label:"далеко"}],
+"Фестиваль Г":[{nom:"Документальный фильм",title:"За стеной",topic:"люди и повседневная забота",match:"partial",label:"частично"},{nom:"Специальный приз",title:"Белый шум",topic:"ночь, музыка, одиночество",match:"partial",label:"частично"}],
+"Фестиваль Д":[{nom:"Анимация",title:"Птицы из бумаги",topic:"память и семейные истории",match:"far",label:"далеко"},{nom:"Документальный фильм",title:"Большая вода",topic:"река, экология, сельская жизнь",match:"partial",label:"частично"}]
+};
+function render(){
+const synopsis=document.getElementById("synopsis").value.trim();
+const film={type:document.getElementById("filmType").value,runtime:Number(document.getElementById("runtime").value),theme:document.getElementById("theme").value,premiere:document.getElementById("premiere").value==="yes",budget:Number(document.getElementById("budget").value),synopsis};
+if(!Number.isFinite(film.runtime)||film.runtime<1||!Number.isFinite(film.budget)||film.budget<0||!synopsis)return;
+const results=document.getElementById("results");results.replaceChildren();let sum=0,good=[];
+festivals.forEach(f=>{
+const reason=evaluate(f,film),ok=!reason;if(ok){sum+=f.fee;good.push(f)}
+const card=document.createElement("article");card.className="result-card";
+const status=document.createElement("div");status.className="status "+(ok?"good":"bad");status.textContent=ok?"Подходит":"Не проходит";
+const h=document.createElement("h4");h.textContent=f.name;
+const meta=document.createElement("div");meta.className="result-meta";meta.textContent="Лимит: "+f.limit+" минут · Дедлайн: "+dateLabel(f.deadline)+" · Взнос: "+money(f.fee)+" · Требует премьеру: "+(f.premiere?"да":"нет");
+const why=document.createElement("p");why.className="reason";why.textContent=ok?"Условия и сроки подходят":"Причина: "+reason;
+card.append(status,h,meta,why);results.appendChild(card);
+});
+document.getElementById("resultCount").textContent=good.length+" из 6 подходят";
+document.getElementById("budgetTotal").textContent=money(sum)+" из "+money(film.budget);
+document.getElementById("budgetLine").classList.toggle("over",sum>film.budget);
+document.getElementById("budgetStatus").textContent=sum>film.budget?"Бюджет превышен":"";
+const winnersResults=document.getElementById("winnersResults");winnersResults.replaceChildren();
+good.forEach(f=>{
+const card=document.createElement("article");card.className="winner-card";const h=document.createElement("h4");h.textContent=f.name+" · победители прошлого года";card.appendChild(h);
+const table=document.createElement("table");table.className="winner-table";table.innerHTML="<thead><tr><th>Номинация</th><th>Фильм-победитель</th><th>Тема</th><th>Совпадение</th></tr></thead>";
+const tbody=document.createElement("tbody");(winners[f.name]||[]).forEach(w=>{const tr=document.createElement("tr");[w.nom,"«"+w.title+"»",w.topic].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td)});const td=document.createElement("td");const tag=document.createElement("span");tag.className="match-tag "+({close:"match-close",partial:"match-partial",far:"match-far"}[w.match]);tag.textContent=w.label;td.appendChild(tag);tr.appendChild(td);tbody.appendChild(tr)});table.appendChild(tbody);card.appendChild(table);winnersResults.appendChild(card);
+});
+if(!good.length){const p=document.createElement("p");p.className="muted";p.textContent="Нет фестивалей, прошедших проверку условий. Проверьте параметры фильма и синопсис.";winnersResults.appendChild(p)}
+const rec=document.getElementById("recommendationText");
+if(film.runtime===40&&film.type==="short"&&film.theme==="documentary"&&film.premiere&&film.budget===15000&&synopsis.toLowerCase().includes("больниц")){
+rec.textContent="Ваш фильм идёт 40 минут, поэтому конкурсы с лимитом 25 минут вам не подходят. Фестиваль А принимает фильмы до 60 минут, срок подачи до 20 ноября, взнос 1 500 ₽. В прошлом году в номинации «Документальный фильм» там победил фильм о работе врача скорой: он близок вашему по теме повседневного труда в медицине. Фестиваль Б требует мировую премьеру: подавайте сначала на него, иначе потеряете этот статус. Это рекомендации, а не прогноз: решение всегда принимает отборочная комиссия.";
+}else{
+const themeName={documentary:"документальной темы",drama:"драмы",animation:"анимации"}[film.theme];
+if(!good.length){rec.textContent="По введённым параметрам подходящих фестивалей не найдено. Проверьте тип и хронометраж, тему, премьерный статус и сроки приёма заявок. Синопсис помогает сформулировать тематическое совпадение, но в этом демо метки совпадения зашиты в примеры и не пересчитываются автоматически."}
+else {const first=good[0],winner=(winners[first.name]||[]).find(w=>w.match==="close")||(winners[first.name]||[])[0];rec.textContent="Для фильма длительностью "+film.runtime+" минут по теме "+themeName+" подходят "+good.length+" фестивалей. "+first.name+" принимает фильмы до "+first.limit+" минут, дедлайн — "+dateLabel(first.deadline)+", взнос — "+money(first.fee)+". "+(winner?"В примере прошлогодний победитель «"+winner.title+"» отмечен как «"+winner.label+"» по теме: "+winner.topic+". ":"")+"Общая сумма взносов — "+money(sum)+" при бюджете "+money(film.budget)+". Проверьте премьерные условия и очередность подач. Это рекомендации, а не прогноз: решение всегда принимает отборочная комиссия."}
+}
+}
+const form=document.getElementById("filterForm"),submit=document.getElementById("submitBtn");
+form.addEventListener("submit",e=>{e.preventDefault();submit.disabled=true;let n=3;submit.innerHTML='<span class="countdown-number" aria-live="polite">3</span><span>Сверяем с победителями прошлого года…</span>';const number=submit.querySelector(".countdown-number");const tick=()=>{n--;if(n>0){number.textContent=String(n);setTimeout(tick,500)}else{render();submit.disabled=false;submit.textContent="Получить рекомендации"}};setTimeout(tick,500)});
+render();
+
+const calendarGrid=document.getElementById("calendarGrid");
+const weekdays=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+weekdays.forEach(w=>{const el=document.createElement("div");el.className="weekday";el.textContent=w;calendarGrid.appendChild(el)});
+const marks={
+13:{color:"#FFD60A",label:"За 7 дней: проверьте заявку и копию фильма",subject:"Через 7 дней дедлайн подачи",body:"Проверьте заявку и копию фильма.\nУбедитесь, что все материалы готовы."},
+19:{color:"#FF6B45",label:"Завтра дедлайн. Отправьте заявку сегодня",subject:"Завтра дедлайн — отправьте заявку сегодня",body:"Завтра закрывается приём заявок.\nПроверьте комплектность и отправьте фильм сегодня."},
+20:{color:"#FF3B30",label:"Сегодня последний день подачи",subject:"Сегодня последний день подачи",body:"Сегодня закрывается приём заявок.\nОтправьте заявку и сохраните подтверждение."}
+};
+const offset=(new Date(2026,10,1).getDay()+6)%7;
+for(let i=0;i<offset;i++){const e=document.createElement("div");e.className="day empty";e.setAttribute("aria-hidden","true");calendarGrid.appendChild(e)}
+for(let day=1;day<=30;day++){
+const b=document.createElement("button");b.type="button";b.className="day";b.textContent=day;
+if(marks[day]){b.classList.add("marked");b.style.setProperty("--mark",marks[day].color);b.setAttribute("aria-label",day+" ноября. "+marks[day].label);b.addEventListener("click",()=>{
+[...calendarGrid.querySelectorAll(".day")].forEach(d=>d.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");
+document.getElementById("emailSubject").textContent=marks[day].subject;
+document.getElementById("emailBody").textContent=marks[day].body;
+});}else{b.setAttribute("aria-label",day+" ноября")}
+calendarGrid.appendChild(b);
+}
+const sw=document.getElementById("reminderSwitch"),msg=document.getElementById("switchMessage");
+sw.addEventListener("click",()=>{const on=sw.getAttribute("aria-checked")!=="true";sw.setAttribute("aria-checked",String(on));msg.hidden=!on});
+
+const revealEls=document.querySelectorAll(".reveal");
+if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}}),{threshold:.12});revealEls.forEach(el=>observer.observe(el))}
+else revealEls.forEach(el=>el.classList.add("visible"));
+
+const themeList=[
+ {id:"night",name:"Ночной сеанс",mode:"slide"},
+ {id:"white",name:"Белый экран",mode:"slide"},
+ {id:"bw",name:"Ч/б кино",mode:"fixed",accent:"#FFFFFF"},
+ {id:"sepia",name:"Сепия",mode:"fixed",accent:"#E0A458"},
+ {id:"techni",name:"Техниколор",mode:"fixed",accent:"#FF8A3D"},
+ {id:"curtain",name:"Красный занавес",mode:"fixed",accent:"#F2C14E"}
+];
+const themeButton=document.getElementById("themeLever"),themeAnnouncement=document.getElementById("themeAnnouncement"),themeMeta=document.querySelector('meta[name="theme-color"]'),leverHandle=document.getElementById("leverHandle"),leverReel=document.getElementById("leverReel"),lampGroup=themeButton.querySelector(".theme-lamps"),lamps=[...lampGroup.querySelectorAll("circle")];
+let activeTheme=0,announceTimer=0,allThemesTimer=0,dragStartY=null,dragMoved=false,dragOffset=0;
+const visitedThemes=new Set();let allThemesShown=false;
+try{const saved=localStorage.getItem("festkadr-theme");const found=themeList.findIndex(t=>t.id===saved);if(found>=0)activeTheme=found}catch(e){}
+function contrastRatio(hex1,hex2){const lum=h=>{const c=h.replace("#","");const rgb=[parseInt(c.slice(0,2),16),parseInt(c.slice(2,4),16),parseInt(c.slice(4,6),16)].map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};const a=lum(hex1),b=lum(hex2);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)}
+function currentSlideData(){return typeof slides!=="undefined"&&slides[current]?slides[current]:{accent:"#FF3B30"}}
+window.applyFestKadrThemeAccent=function(slide){const t=themeList[activeTheme];let accent=t.mode==="slide"?slide.accent:t.accent;if(t.id==="white"&&contrastRatio(accent,"#FFFFFF")<3)accent="#D92D20";root.style.setProperty("--accent",accent)};
+function updateThemeControl(){lamps.forEach((lamp,i)=>lamp.classList.toggle("active",i===activeTheme));themeButton.setAttribute("aria-label","Сменить цветовую тему. Текущая тема: "+themeList[activeTheme].name);themeMeta.setAttribute("content",getComputedStyle(root).getPropertyValue("--bg").trim());}
+function announceTheme(text,seconds=2){clearTimeout(announceTimer);themeAnnouncement.textContent=text;themeAnnouncement.classList.add("visible");announceTimer=setTimeout(()=>themeAnnouncement.classList.remove("visible"),seconds*1000)}
+function setTheme(index){activeTheme=(index+themeList.length)%themeList.length;const t=themeList[activeTheme];root.dataset.theme=t.id;window.applyFestKadrThemeAccent(currentSlideData());updateThemeControl();try{localStorage.setItem("festkadr-theme",t.id)}catch(e){}visitedThemes.add(t.id);announceTheme("Сеанс "+(activeTheme+1)+" из 6: "+t.name,2);leverReel.classList.remove("spinning");void leverReel.getBoundingClientRect();leverReel.classList.add("spinning");setTimeout(()=>leverReel.classList.remove("spinning"),420);if(visitedThemes.size===themeList.length&&!allThemesShown){allThemesShown=true;clearTimeout(allThemesTimer);allThemesTimer=setTimeout(()=>announceTheme("Все сеансы просмотрены",3),2100)}}
+function setLeverOffset(y){dragOffset=Math.max(-14,Math.min(14,y));leverHandle.style.transform="translateY("+dragOffset+"px)"}
+function startDrag(e){dragStartY=e.clientY;dragMoved=false;themeButton.classList.add("dragging");themeButton.setPointerCapture?.(e.pointerId)}
+function moveDrag(e){if(dragStartY===null)return;const dy=e.clientY-dragStartY;if(Math.abs(dy)>4)dragMoved=true;setLeverOffset(dy*.55)}
+function endDrag(e){if(dragStartY===null)return;const dy=e.clientY-dragStartY;dragStartY=null;setLeverOffset(0);themeButton.classList.remove("dragging");if(Math.abs(dy)>28){themeButton.dataset.dragged="1";setTheme(activeTheme+(dy>0?1:-1));restartThemeSlideTimer();setTimeout(()=>delete themeButton.dataset.dragged,0)}else if(dragMoved){themeButton.dataset.dragged="1";setTimeout(()=>delete themeButton.dataset.dragged,0)}}
+themeButton.addEventListener("click",e=>{if(themeButton.dataset.dragged){delete themeButton.dataset.dragged;return}setTheme(activeTheme+(e.shiftKey?-1:1));restartThemeSlideTimer()});
+themeButton.addEventListener("pointerdown",startDrag);themeButton.addEventListener("pointermove",moveDrag);themeButton.addEventListener("pointerup",endDrag);themeButton.addEventListener("pointercancel",endDrag);
+function restartThemeSlideTimer(){if(typeof restart==="function")restart()}
+root.dataset.theme=themeList[activeTheme].id;visitedThemes.add(themeList[activeTheme].id);window.applyFestKadrThemeAccent(currentSlideData());updateThemeControl();
+})();
+</script>
+</body>
+</html>
